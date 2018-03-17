@@ -1,6 +1,6 @@
 # OTM-harjoitustyö
 
-Harjoitustyön (sekä laskareiden) *repo* **ohjelmistotekniikan mekaniikat** -kurssia varten.
+Harjoitustyön (sekä viikottaisten tehtävien) *repo* **ohjelmistotekniikan mekaniikat** -kurssia varten.
 
 
 ## Tehtävät
