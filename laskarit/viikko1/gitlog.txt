@@ -1,0 +1,124 @@
+commit a0dc1f6d95dacc0871f23d308296db4ec251b807
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:56:58 2018 +0200
+
+    poistettiin file1 ja file2 --> file22
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit c21eae5bb429dd20418498629a8aae5c00384d3a
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:55:51 2018 +0200
+
+    muutettiin file3
+
+ tiedostoja/file3 | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+commit c711e62124e98b5bb4cafc34fe88fbb10a12a0c9
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:53:21 2018 +0200
+
+    muutettiin file3
+
+ tiedostoja/file3 | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+commit e746b1ff1b4b112da85b3bba55951a7518d092fb
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:47:28 2018 +0200
+
+    lisättiin tiedsotoja
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 9ca0ee3ab87820157a2bad6a5534901b06060031
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:35:05 2018 +0200
+
+    muutettiin eka ja kolmas
+
+ eka.txt    | 4 +---
+ kolmas.txt | 2 +-
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+
+commit f3eaba0ae1138fbacaf6ad269c940e8e8a57654f
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:30:42 2018 +0200
+
+    muutettuun tiedosto.txt --> eka.txt
+
+ eka.txt      | 3 +++
+ tiedosto.txt | 3 ---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit fb3219021a5a773311e1b306f6fb66d835a843ae
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:29:16 2018 +0200
+
+    poistettiin toinen
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit d9f7a838bd8e5124039e1a39fcb804e40a0323ed
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:25:21 2018 +0200
+
+    lisättiit tekstia tiedostoon
+
+ tiedosto.txt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit d81116d2e1568c211a135f35133240bf8b1e332c
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:18:53 2018 +0200
+
+    lisätty stuff ja neljas.txt
+
+ stuff/neljas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit c7cb88311a911f8fcbe3e2971f91b74454764e23
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:16:48 2018 +0200
+
+    muutettu toinen ja kolmas
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 82b6b2a34d448c37d10962b234753c5c80f4e04d
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:14:41 2018 +0200
+
+    lisätty kolmas.txt
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 9ee359132a9797a174f59d2d94b447edb8cade9c
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:09:36 2018 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit d34a18ceb357566b32c2ed08444a5ce86039efd9
+Author: JoonaHa <32388752+JoonaHa@users.noreply.github.com>
+Date:   Sat Mar 17 17:04:11 2018 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
