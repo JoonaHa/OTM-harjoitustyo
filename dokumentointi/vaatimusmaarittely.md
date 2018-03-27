@@ -1,7 +1,8 @@
 # Vaatimusmaarittely
 
+## Description
 
-#### Program is a top-down shooter where the protagonist has to defend himself from a hoard of enemies in a pitch black darkness. The player is given a flashlight which reveals oncoming enemies.
+Program is a top-down shooter where the protagonist has to defend himself from a hoard of enemies in a pitch black darkness. The player is given a flashlight which reveals oncoming enemies.
 
 
 ## Features
