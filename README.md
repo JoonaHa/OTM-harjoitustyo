@@ -4,8 +4,8 @@ Harjoitustyön, sekä viikottaisten tehtävien, *repo* **ohjelmistotekniikan mek
 
 
 ## Dokumentaatio
-* [Vaatimusmaarittely](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentointi/vaatimusmaarittely.md)
-* [Tuntikirjanpito](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentointi/tuntikirjanpito.md)
+* [Vaatimusmaarittely](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
+* [Tuntikirjanpito](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/tuntikirjanpito.md)
 * [Arkkitehtuurikuvaus](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 ## Komentorivitoiminot
 
