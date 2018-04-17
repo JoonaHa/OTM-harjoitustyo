@@ -8,4 +8,4 @@
 | 16.4  | 1    | Checkstylen konfigurointi
 | 17.4  | 4    | Peliruudun ja Sprite-luokan totetuttavien luokkine toteutus
 | 17.4  | 2    | arkkitehtuurikuvaus ja tetstien hiomista
-| yht.  | 17   |  |
+| yht.  | 15   |  |
