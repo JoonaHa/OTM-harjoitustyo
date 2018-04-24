@@ -50,14 +50,12 @@ public abstract class Sprite {
         this.alife = alife;
     }
 
-    public void rotate(double mouseX, double mouseY) {
+    public void rotateTowards(double mouseX, double mouseY) {
 
         double angle = Math.toDegrees(Math.atan2(this.getShape().getTranslateY() - mouseY,
-                mouseX - this.getShape().getTranslateX()));
-        
-        
+                mouseX - this.getShape().getTranslateX())) * -1;
 
-        this.getShape().setRotate(angle * -1);
+        this.getShape().setRotate(angle);
 
     }
 

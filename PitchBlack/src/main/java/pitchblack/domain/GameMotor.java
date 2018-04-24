@@ -13,7 +13,7 @@ import javafx.scene.input.MouseEvent;
 
 /**
  *
- * @author mina
+ * @author JoonaHa
  */
 public class GameMotor {
 
@@ -60,7 +60,7 @@ public class GameMotor {
         }
 
         if (mouseEvents.size() > 0) {
-            player.rotate(mouseEvents.get(mouseEvents.size() - 1).getSceneX(), mouseEvents.get(mouseEvents.size() - 1).getSceneY());
+            player.rotateTowards(mouseEvents.get(mouseEvents.size() - 1).getSceneX(), mouseEvents.get(mouseEvents.size() - 1).getSceneY());
         }
 
         player.update();
