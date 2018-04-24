@@ -23,6 +23,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -131,21 +132,26 @@ public class Ui extends Application {
             mainStage.setScene(gameScene);
         });
 
-        HashMap<KeyCode, Boolean> buttonPresses = new HashMap<>();
+        HashMap<KeyCode, Boolean> input = new HashMap<>();
+        ArrayList<MouseEvent> mouseEvents = new ArrayList<>();
 
         gameScene.setOnKeyPressed((event -> {
-            buttonPresses.put(event.getCode(), Boolean.TRUE);
+            input.put(event.getCode(), Boolean.TRUE);
         }));
 
         gameScene.setOnKeyReleased((event -> {
-            buttonPresses.put(event.getCode(), Boolean.FALSE);
+            input.put(event.getCode(), Boolean.FALSE);
+        }));
+
+        gameScene.setOnMouseMoved((event -> {
+            mouseEvents.add(event);
         }));
 
         new AnimationTimer() {
             @Override
             public void handle(long l) {
-                
-                GameMotor.getInstance(buttonPresses, player).update();
+
+                GameMotor.getInstance(input, mouseEvents, player).update();
 
                 // Make player.lamp cut trough dark DOES NOT WORK
                 Shape s = Shape.subtract(dark, player.getLamp());
