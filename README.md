@@ -24,6 +24,6 @@ Checkstyle tarkistukset suoritetaan komennolla.Tarkistuksen määritykset ovat [
 ```
  mvn jxr:jxr checkstyle:checkstyle
 ```
-Tarkistuksen tulokset löytyvät target/site/target/site/checkstyle.html tiedostosta.
+Tarkistuksen tulokset löytyvät target/site/checkstyle.html tiedostosta.
 
 
