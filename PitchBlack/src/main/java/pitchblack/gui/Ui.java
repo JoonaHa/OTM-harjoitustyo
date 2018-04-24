@@ -29,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import pitchblack.domain.GameMotor;
 import pitchblack.domain.Player;
 
 /**
@@ -116,7 +117,6 @@ public class Ui extends Application {
         // Add "darkness"
         Rectangle dark = new Rectangle(WIDTH, HEIGHT);
         dark.setFill(Color.BLACK);
-        
 
         // Show startingScene
         mainStage.setScene(startingScene);
@@ -144,36 +144,11 @@ public class Ui extends Application {
         new AnimationTimer() {
             @Override
             public void handle(long l) {
-
-                player.setVelocity(new Point2D(0, 0));
-
-                if (buttonPresses.getOrDefault(KeyCode.W, Boolean.FALSE)) {
-                    player.setVelocity((new Point2D(player.getVelocity().getX(), -5)));
-
-                }
-
-                if (buttonPresses.getOrDefault(KeyCode.S, Boolean.FALSE)) {
-                    player.setVelocity((new Point2D(player.getVelocity().getX(), 5)));
-
-                }
-
-                if (buttonPresses.getOrDefault(KeyCode.A, Boolean.FALSE)) {
-                    player.setVelocity((new Point2D(-5, player.getVelocity().getY())));
-
-                }
-
-                if (buttonPresses.getOrDefault(KeyCode.D, Boolean.FALSE)) {
-                    player.setVelocity((new Point2D(5, player.getVelocity().getY())));
-
-                }
-
-                player.update();
                 
-                
+                GameMotor.getInstance(buttonPresses, player).update();
+
                 // Make player.lamp cut trough dark DOES NOT WORK
                 Shape s = Shape.subtract(dark, player.getLamp());
-                
-                
 
             }
 
