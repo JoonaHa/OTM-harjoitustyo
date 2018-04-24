@@ -8,6 +8,7 @@ package pitchblack.domain;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Rotate;
 import pitchblack.gui.Ui;
 
 /**
@@ -26,6 +27,7 @@ public abstract class Sprite {
         this.shape.setTranslateY(y);
         this.velocity = new Point2D(0, 0);
         this.alife = true;
+
     }
 
     public Polygon getShape() {
@@ -46,6 +48,17 @@ public abstract class Sprite {
 
     public void setAlife(boolean alife) {
         this.alife = alife;
+    }
+
+    public void rotate(double mouseX, double mouseY) {
+
+        double angle = Math.toDegrees(Math.atan2(this.getShape().getTranslateY() - mouseY,
+                mouseX - this.getShape().getTranslateX()));
+        
+        
+
+        this.getShape().setRotate(angle * -1);
+
     }
 
     public void update() {

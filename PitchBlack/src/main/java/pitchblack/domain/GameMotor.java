@@ -5,9 +5,11 @@
  */
 package pitchblack.domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 
 /**
  *
@@ -16,17 +18,19 @@ import javafx.scene.input.KeyCode;
 public class GameMotor {
 
     private static GameMotor gameMotor;
-    private HashMap<KeyCode, Boolean> input;
-    private Player player;
+    private final HashMap<KeyCode, Boolean> input;
+    private final ArrayList<MouseEvent> mouseEvents;
+    private final Player player;
 
-    private GameMotor(HashMap<KeyCode, Boolean> input, Player player) {
+    private GameMotor(HashMap<KeyCode, Boolean> input, ArrayList<MouseEvent> mouseEvents, Player player) {
         this.input = input;
         this.player = player;
+        this.mouseEvents = mouseEvents;
     }
 
-    public static GameMotor getInstance(HashMap<KeyCode, Boolean> input, Player player) {
+    public static GameMotor getInstance(HashMap<KeyCode, Boolean> input, ArrayList<MouseEvent> mouseEvents, Player player) {
         if (gameMotor == null) {
-            gameMotor = new GameMotor(input, player);
+            gameMotor = new GameMotor(input, mouseEvents, player);
         }
         return gameMotor;
     }
@@ -53,6 +57,10 @@ public class GameMotor {
         if (input.getOrDefault(KeyCode.D, Boolean.FALSE)) {
             player.setVelocity((new Point2D(5, player.getVelocity().getY())));
 
+        }
+
+        if (mouseEvents.size() > 0) {
+            player.rotate(mouseEvents.get(mouseEvents.size() - 1).getSceneX(), mouseEvents.get(mouseEvents.size() - 1).getSceneY());
         }
 
         player.update();
