@@ -9,8 +9,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Shape;
-import pitchblack.gui.Ui;
+import javafx.scene.transform.Rotate;
+
 
 /**
  *
@@ -21,7 +21,7 @@ public class Player extends Sprite {
     private Polygon shape;
     private Point2D velocity;
     private boolean alife;
-    private Ellipse lamp;
+    private final Ellipse lamp;
 
     public Player(double x, double y) {
         super((new Polygon(10, -10, 10, 10, -10, 10, -10, -10)), x, y);
@@ -42,6 +42,11 @@ public class Player extends Sprite {
         this.getLamp().setTranslateX(this.getLamp().getTranslateX() + this.getVelocity().getX());
         this.getLamp().setTranslateY(this.getLamp().getTranslateY() + this.getVelocity().getY());
 
+    }
+    
+    public void rotate(double x, double y ) {
+        this.getShape().getRotate();
+        this.getShape().setRotate(0);
     }
 
 }
