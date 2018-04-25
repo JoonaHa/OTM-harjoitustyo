@@ -8,4 +8,8 @@
 | 16.4  | 1    | Checkstylen konfigurointi
 | 17.4  | 4    | Peliruudun ja Sprite-luokan totetuttavien luokkine toteutus
 | 17.4  | 2    | arkkitehtuurikuvaus ja tetstien hiomista
-| yht.  | 15   |  |
+| 24.4  | 2    | Pelilogiikan migraatio Ui:sta GameMotor:iin
+| 24.4  | 2    | Hiirellä tähtääminen toteutettu
+| 24.4  | 1    | Refraktorointia ja nimien tarkentamista
+| 25.4  | 1    | Testaus laajennettu Sprite-luokkaan
+| yht.  | 21   |  |
