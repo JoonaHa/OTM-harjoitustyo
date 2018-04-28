@@ -27,13 +27,13 @@ public class Player extends Sprite {
 
     public Player(double x, double y) {
         super((new Polygon(10, -10, 10, 10, -10, 10, -10, -10)), x, y);
-        this.lamp = new Ellipse(50, 120);
+        this.lamp = new Ellipse(80, 120);
         this.lamp.setTranslateX(x);
-        this.lampoffset = -125;
+        this.lampoffset = -115;
         this.lamp.setTranslateY(y + lampoffset);
         this.lamp.setFill(Color.WHITE);
         this.lampRt = new Rotate();
-        this.lampRt.setPivotY(125);
+        this.lampRt.setPivotY(Math.abs(lampoffset));
         this.getLamp().getTransforms().add(lampRt);
 
     }
@@ -45,6 +45,21 @@ public class Player extends Sprite {
     @Override
     public void update() {
         super.update();
+
+        if (this.getShape().getTranslateX() < 0) {
+            this.getShape().setTranslateX(0);
+        }
+        if (this.getShape().getTranslateX() > Ui.WIDTH) {
+            this.getShape().setTranslateX((Ui.WIDTH));
+
+        }
+        if (this.getShape().getTranslateY() < 0) {
+            this.getShape().setTranslateY(0);
+        }
+        if (this.getShape().getTranslateY() > Ui.HEIGHT) {
+            this.getShape().setTranslateY(Ui.HEIGHT);
+        }
+
         this.getLamp().setTranslateX(this.getShape().getTranslateX());
         this.getLamp().setTranslateY(this.getShape().getTranslateY() + lampoffset);
         this.lampRt.setAngle(this.getShape().getRotate() + 90);

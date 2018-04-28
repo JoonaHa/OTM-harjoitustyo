@@ -10,6 +10,7 @@ package pitchblack.domain;
  * @author JoonaHa
  */
 public class Score {
+
     private String nickname;
     private Integer score;
 
@@ -25,11 +26,5 @@ public class Score {
     public int getScore() {
         return score;
     }
-    
-    
-    
 
-
-    
 }
-

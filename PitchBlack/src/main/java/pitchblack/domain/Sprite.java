@@ -8,7 +8,6 @@ package pitchblack.domain;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
-import javafx.scene.transform.Rotate;
 import pitchblack.gui.Ui;
 
 /**
@@ -62,25 +61,11 @@ public abstract class Sprite {
     public void update() {
         this.getShape().setTranslateX(this.getShape().getTranslateX() + this.getVelocity().getX());
         this.getShape().setTranslateY(this.getShape().getTranslateY() + this.getVelocity().getY());
-
-        if (this.shape.getTranslateX() < 0) {
-            this.shape.setTranslateX(this.shape.getTranslateX() + Ui.WIDTH);
-        }
-        if (this.shape.getTranslateX() > Ui.WIDTH) {
-            this.shape.setTranslateX(this.shape.getTranslateX() % Ui.WIDTH);
-
-        }
-        if (this.shape.getTranslateY() < 0) {
-            this.shape.setTranslateY(this.shape.getTranslateY() + Ui.HEIGHT);
-        }
-        if (this.shape.getTranslateY() > Ui.HEIGHT) {
-            this.shape.setTranslateY(this.getShape().getTranslateY() % Ui.HEIGHT);
-        }
     }
 
-    public boolean intersects(Sprite s) {
-        Shape area = Shape.intersect(this.getShape(), s.getShape());
-        return area.getBoundsInLocal().getWidth() != 1;
+    public boolean intersects(Shape s) {
+        Shape area = Shape.intersect(this.getShape(), s);
+        return area.getBoundsInLocal().getWidth() != -1;
     }
 
 }
