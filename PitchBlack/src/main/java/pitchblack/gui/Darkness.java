@@ -10,7 +10,7 @@ import javafx.scene.shape.Shape;
 
 /**
  *
- * @author Your Name <JoonaHa>
+ * @author JoonaHa
  */
 public class Darkness {
     private Shape shape;

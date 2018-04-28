@@ -8,7 +8,6 @@ package pitchblack.domain;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
-import pitchblack.gui.Ui;
 
 /**
  *

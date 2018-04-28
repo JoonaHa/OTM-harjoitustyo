@@ -22,8 +22,8 @@ public class Player extends Sprite {
     private Point2D velocity;
     private boolean alife;
     private final Ellipse lamp;
-    private Rotate lampRt;
-    private double lampoffset;
+    private final Rotate lampRt;
+    public final double lampoffset;
 
     public Player(double x, double y) {
         super((new Polygon(10, -10, 10, 10, -10, 10, -10, -10)), x, y);
