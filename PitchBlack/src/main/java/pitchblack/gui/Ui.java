@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package pitchblack.gui;
 
 import java.util.ArrayList;
@@ -50,8 +46,10 @@ public class Ui extends Application {
     @Override
     public void init() throws Exception {
 
-        Database db = new Database("jdbc:sqlite:db/highScores.db");
+        Database db = new Database("jdbc:sqlite:highScores.db");
         scoreDao = new ScoresDao(db);
+       
+       
 
     }
 

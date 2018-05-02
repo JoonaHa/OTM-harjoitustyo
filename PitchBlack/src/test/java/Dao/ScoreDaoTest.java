@@ -1,11 +1,5 @@
 package Dao;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import pitchblack.dao.ScoresDao;
 import pitchblack.database.Database;
 import pitchblack.domain.Score;
@@ -33,7 +27,7 @@ public class ScoreDaoTest {
     @Before
     public void setUp() {
         try {
-            database = new Database("jdbc:sqlite:db/highScores.db");
+            database = new Database("jdbc:sqlite:highScores.db");
             database.getConnection();
         } catch (Exception e) {
             System.out.println("Can not create database");
