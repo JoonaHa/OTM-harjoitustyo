@@ -1,6 +1,6 @@
 # Käyttöohje
 
-HUOM! Tämä käyttöohje on alustava ja tulee muutumaan ohjelman kehittyesssä.
+**HUOM!** Tämä käyttöohje on alustava ja tulee muutumaan ohjelman kehittyesssä.
 
 ## Aloitusvalikkko
 
