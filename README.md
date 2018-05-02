@@ -9,7 +9,7 @@ Yksinkertainen ylhäältäpäin kuvattu räiskintäpeli, jossa pelaajan pitää 
 * [Arkkitehtuurikuvaus](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 * [Tuntikirjanpito](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/tuntikirjanpito.md)
 ## Releaset
-* [Viikko 6](https://github.com/JoonaHa/OTM-harjoitustyo/releases/tag/v.06)
+* [Viikko 6](https://github.com/JoonaHa/OTM-harjoitustyo/releases/tag/v.06.1)
 * [Viikko 5](https://github.com/JoonaHa/OTM-harjoitustyo/releases/tag/v0.5)
 ## Komentorivitoiminot
 * **Huom!** Muista siirtyä oikeaan kansioon ennen komentojen suorittamista. Esimerkiksi:
