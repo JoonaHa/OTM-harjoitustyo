@@ -5,6 +5,7 @@ Harjoitustyön, sekä viikottaisten tehtävien, *repo* **ohjelmistotekniikan mek
 Yksinkertainen ylhäältäpäin kuvattu räiskintäpeli, jossa pelaajan pitää puolustaa itseään pimeydessä, apunaan hänen luotettava taskulamppunsa.
 
 ## Dokumentaatio
+* [Käyttöohje](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/kayttoohje.md)
 * [Vaatimusmaarittely](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 * [Arkkitehtuurikuvaus](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 * [Tuntikirjanpito](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/tuntikirjanpito.md)
@@ -40,5 +41,13 @@ Suoritettava tiedosto löytyy _target_-hakemistosta nimellä _target/OtmPitchBla
  mvn jxr:jxr checkstyle:checkstyle
 ```
 Tarkistuksen tulokset löytyvät _target/site/checkstyle.html_ tiedostosta.
+
+**JavaDoc** pystyy generoimaan komennolla:
+
+```
+mvn javadoc:javadoc
+```
+
+JavaDocia voi tarkastella selaimella tiedostosta _target/site/apidocs/index.html_
 
 
