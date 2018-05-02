@@ -13,8 +13,11 @@ import javafx.scene.transform.Rotate;
 import pitchblack.gui.Ui;
 
 /**
- *
+ *Luokka pelaajan hahmon hallinnoimiseen.
  * @author JoonaHa
+ *
+ * 
+ * 
  */
 public class Player extends Sprite {
 
@@ -23,8 +26,18 @@ public class Player extends Sprite {
     private boolean alife;
     private final Ellipse lamp;
     private final Rotate lampRt;
+    /**
+     * Määrittelee pelaajan lampunsäteen eron pelaajan hahmon sijaintiin.
+     */
     public final double lampoffset;
 
+    /**
+     * Luo pelaaja hahmon annettuihin aloituskoordinaatteihin.
+     *
+     *
+     * @param x x-akselin koordinaatti pelaajan aloitussijainniksi.
+     * @param y y-akselin koordinaatti pelaajan aloitussijainniksi.
+     */
     public Player(double x, double y) {
         super((new Polygon(10, -10, 10, 10, -10, 10, -10, -10)), x, y);
         this.lamp = new Ellipse(80, 120);
@@ -37,10 +50,22 @@ public class Player extends Sprite {
         this.getLamp().getTransforms().add(lampRt);
 
     }
+    
+    /**
+     * Palauttaa pelaajan lampun muodon.
+     * 
+     * @return pelaajan lampun muoto.
+     */
 
     public Ellipse getLamp() {
         return lamp;
     }
+    
+    /**
+     * Päivittää pelaajan sijainnin nopeuden perusteella.
+     * Huolehtii ettei pelaaja voi mennä ulos ikkunasta.
+     * Päivittää lampun sijainnin ja kulman, suhteessa pelajan hahmoon. 
+     */
 
     @Override
     public void update() {

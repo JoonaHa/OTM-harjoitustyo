@@ -16,16 +16,32 @@ import java.util.List;
 
 
 /**
- *
+ *Luokka tarjoaa metodeita Score-olioden tietokantakyselyitä varten.
  * @author JoonaHa
+ * 
  */
 public class ScoresDao {
 
     private Database database;
+    
+    
+    /**
+     * 
+     * @param database Database-olio tietokantathteyden muodostamiseksi.
+     * @see Database
+     */
 
     public ScoresDao(Database database) {
         this.database = database;
     }
+    
+    /**
+     * Lisää tietokantaan uuden score-olion.
+     * @param score Tietokantaan lisättävä score-olio.
+     * @return score-olion lisäyksen onnistuminen
+     * @throws SQLException
+     * @throws Exception 
+     */
 
     public boolean add(Score score) throws SQLException, Exception {
         try (Connection connection = database.getConnection()) {
@@ -41,6 +57,13 @@ public class ScoresDao {
         }
 
     }
+    
+    /**
+     * Palauttaa kaikki tietokanna score-oliot listana.
+     * @return Lista tietokannan score-oliosta.
+     * @throws SQLException
+     * @throws Exception 
+     */
 
     public List<Score> getAll() throws SQLException, Exception {
         Connection connection = database.getConnection();
@@ -64,6 +87,14 @@ public class ScoresDao {
         return listOfScores;
 
     }
+    
+    /**
+     * Poistaa tietokannasta annetun pelaajan score-tulokset.
+     * @param nickname Poistettavan pelaajan nimimerkki.
+     * @return Poistamisen onnistuminen.
+     * @throws SQLException
+     * @throws Exception 
+     */
 
     public boolean delete(String nickname) throws SQLException, Exception {
         try (Connection connection = database.getConnection()) {

@@ -10,17 +10,31 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- *
+ *Luokka hallitsee tietokantayhteyttä.
  * @author JoonaHa
+ * 
+ * 
+ * 
+ * 
  */
 public class Database {
 
     private String databaseAddress;
 
-    public Database(String databaseAddress) throws ClassNotFoundException {
+    /**
+     * 
+     * @param databaseAddress Käytettävän tietokannan osoite.
+     * 
+     */
+    public Database(String databaseAddress)  {
         this.databaseAddress = databaseAddress;
     }
 
+    /**
+     * 
+     * @return Muodostaa yhteyden tietokantaan ja palauttaa Connection-olion.
+     * @throws SQLException 
+     */
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(databaseAddress);
     }

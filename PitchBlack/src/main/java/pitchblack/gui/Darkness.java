@@ -25,12 +25,16 @@ public class Darkness {
     public Shape getOld() {
         return old;
     }
+    
+    private void updateOld() {
+        this.old = this.shape;
+    }
 
    
     
     
     public Shape update(Shape lamp) {
-        this.old = this.shape;
+        updateOld();
         this.shape = Shape.subtract(this.canvas, lamp);
         return shape;
     }

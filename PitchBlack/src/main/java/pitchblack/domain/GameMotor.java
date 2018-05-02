@@ -12,8 +12,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 
 /**
- *
+ *Singleton-luokka, joka käsittelee pelin tiloja ja pelaajan syötteitä.
  * @author JoonaHa
+ * 
  */
 public class GameMotor {
 
@@ -22,11 +23,23 @@ public class GameMotor {
     private final ArrayList<MouseEvent> mouseEvents;
     private final Player player;
 
+    /**
+     * 
+     *
+     */
     private GameMotor(HashMap<KeyCode, Boolean> input, ArrayList<MouseEvent> mouseEvents, Player player) {
         this.input = input;
         this.player = player;
         this.mouseEvents = mouseEvents;
     }
+    
+    /**
+     * Luokka palauttaa GameMotor instanssin.
+     * @param input Käyttäjän näppäimistö painallukset.
+     * @param mouseEvents Käyttäjän hiiren tapahtumat.
+     * @param player Pelaajan hahmo
+     * @return GameMotor instanssi.
+     */
 
     public static GameMotor getInstance(HashMap<KeyCode, Boolean> input, ArrayList<MouseEvent> mouseEvents, Player player) {
         if (gameMotor == null) {
@@ -34,6 +47,10 @@ public class GameMotor {
         }
         return gameMotor;
     }
+    
+    /**
+     * Päivittäää pelin tilan.
+     */
 
     public void update() {
 

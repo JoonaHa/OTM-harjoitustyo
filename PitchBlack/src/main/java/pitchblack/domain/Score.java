@@ -6,13 +6,24 @@
 package pitchblack.domain;
 
 /**
- *
+ * Luokka pelaajien pistetuloksille.
+ * 
  * @author JoonaHa
+ * 
+ *
+ * 
  */
 public class Score {
 
     private String nickname;
     private Integer score;
+    
+    /**
+     * Luo uuden pistetuloksen.
+     * 
+     * @param nickname Pelaajan lempinimi.
+     * @param score  Pelaajan pisteet
+     */
 
     public Score(String nickname, int score) {
         this.nickname = nickname;
