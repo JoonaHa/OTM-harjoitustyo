@@ -1,4 +1,3 @@
-
 package pitchblack.domain;
 
 import java.util.ArrayList;
@@ -6,49 +5,58 @@ import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import static pitchblack.gui.Ui.HEIGHT;
+import static pitchblack.gui.Ui.WIDTH;
 
 /**
- *Singleton-luokka, joka käsittelee pelin tiloja ja pelaajan syötteitä.
+ * Singleton-luokka, joka käsittelee pelin tiloja ja pelaajan syötteitä.
+ *
  * @author JoonaHa
- * 
+ *
  */
 public class GameMotor {
 
     private static GameMotor gameMotor;
     private final HashMap<KeyCode, Boolean> input;
     private final ArrayList<MouseEvent> mouseEvents;
-    private final Player player;
+    private Player player;
+    private Boolean running;
 
     /**
-     * 
+     *
      *
      */
-    private GameMotor(HashMap<KeyCode, Boolean> input, ArrayList<MouseEvent> mouseEvents, Player player) {
+    private GameMotor(HashMap<KeyCode, Boolean> input, ArrayList<MouseEvent> mouseEvents) {
         this.input = input;
-        this.player = player;
         this.mouseEvents = mouseEvents;
+        this.player = new Player(WIDTH / 2, HEIGHT / 2);
+        this.player.rotateTowards(WIDTH/2, 0);
+        this.running = true;
+
     }
-    
+
     /**
      * Luokka palauttaa GameMotor instanssin.
+     *
      * @param input Käyttäjän näppäimistö painallukset.
      * @param mouseEvents Käyttäjän hiiren tapahtumat.
-     * @param player Pelaajan hahmo
      * @return GameMotor instanssi.
      */
-
-    public static GameMotor getInstance(HashMap<KeyCode, Boolean> input, ArrayList<MouseEvent> mouseEvents, Player player) {
+    public static GameMotor getInstance(HashMap<KeyCode, Boolean> input, ArrayList<MouseEvent> mouseEvents) {
         if (gameMotor == null) {
-            gameMotor = new GameMotor(input, mouseEvents, player);
+            gameMotor = new GameMotor(input, mouseEvents);
         }
         return gameMotor;
     }
-    
+
     /**
      * Päivittäää pelin tilan.
      */
-
     public void update() {
+
+        if (!this.running) {
+            return;
+        }
 
         player.setVelocity(new Point2D(0, 0));
 
@@ -77,6 +85,39 @@ public class GameMotor {
         }
 
         player.update();
+    }
+
+    
+    public Player getPlayer() {
+        return player;
+    }
+    
+
+     /**
+     * Pysäyttää pelin eli updaten käsittelyn.
+     * Eli running = false.
+     */
+    public void pause() {
+        this.running = false;
+    }
+
+    /**
+     * Jatkaa peliä eli palauttaa updaten käsittelyn.
+     * Eli running = true.
+     * 
+     */
+    public void resume() {
+        this.running = true;
+    }
+
+     /**
+     * Resetoi pelin tilan alkutilanteeseen.
+     */
+    public void newGame() {
+        this.player = new Player(WIDTH / 2, HEIGHT / 2);
+        this.player.rotateTowards(WIDTH/2, 0);
+        this.resume();
+
     }
 
 }

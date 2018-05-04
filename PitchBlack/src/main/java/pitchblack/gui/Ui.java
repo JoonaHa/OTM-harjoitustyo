@@ -1,4 +1,3 @@
-
 package pitchblack.gui;
 
 import java.util.ArrayList;
@@ -48,8 +47,6 @@ public class Ui extends Application {
 
         Database db = new Database("jdbc:sqlite:highScores.db");
         scoreDao = new ScoresDao(db);
-       
-       
 
     }
 
@@ -60,8 +57,8 @@ public class Ui extends Application {
 
         // Creates the starting screen with two buttons
         // Add cache for scores
-        Pane menu = new Pane();
-        menu.setPrefSize(WIDTH, HEIGHT);
+        Pane menuPane = new Pane();
+        menuPane.setPrefSize(WIDTH, HEIGHT);
 
         VBox menuButtons = new VBox();
 
@@ -78,16 +75,13 @@ public class Ui extends Application {
         menuButtons.getChildren().add(startBtn);
         menuButtons.getChildren().add(scoresBtn);
 
-        menu.getChildren().add(menuButtons);
-        Scene menuScene = new Scene(menu);
+        menuPane.getChildren().add(menuButtons);
+        Scene menuScene = new Scene(menuPane);
 
         // Create High score screen
-        Pane scorePane = new Pane();
-        scorePane.setPrefSize(WIDTH, HEIGHT);
         BorderPane scoreBorderP = new BorderPane();
         scoreBorderP.setPrefSize(WIDTH, HEIGHT);
-
-        // Make tablview and colums for highscore info
+        // Make tableview and colums for highscore info
         TableView<Score> scoreTbl = new TableView<>();
         scoreTbl.setPrefSize(WIDTH, HEIGHT);
 
@@ -101,10 +95,8 @@ public class Ui extends Application {
 
         scoreTbl.getColumns().addAll(nameColum, scoreColum);
         scoreTbl.setItems(getScores());
-
-        //Make a back button
+        //Make a back button for highscore
         Button toMenuBtn = new Button("BACK");
-
         scoreBorderP.setCenter(scoreTbl);
         scoreBorderP.setBottom(toMenuBtn);
         Scene scoreScene = new Scene(scoreBorderP);
@@ -113,9 +105,6 @@ public class Ui extends Application {
         Pane gamePane = new Pane();
         gamePane.setPrefSize(WIDTH, HEIGHT);
         Scene gameScene = new Scene(gamePane);
-        // Add player
-        Player player = new Player(WIDTH / 2, HEIGHT / 2);
-        gamePane.getChildren().add(player.getShape());
 
         // test recntangle
         Shape test = new Rectangle(10, 10);
@@ -123,32 +112,30 @@ public class Ui extends Application {
         test.setTranslateY(WIDTH / 3);
         gamePane.getChildren().add(test);
 
-        // Add darkness
-        Darkness dark = new Darkness();
-        gamePane.getChildren().add(dark.update(player.getLamp()));
+        //Create pause Screen
+        Pane pausePane = new Pane();
+        pausePane.setPrefSize(WIDTH, HEIGHT);
+        VBox pauseButtons = new VBox();
 
-        // Show startingScreen
-        mainStage.setScene(menuScene);
-        mainStage.show();
+        pauseButtons.setSpacing(80);
+        pauseButtons.setAlignment(Pos.TOP_CENTER);
+        pauseButtons.setTranslateX(390);
+        pauseButtons.setTranslateY(150);
 
-        // startingScene button actions
-        scoresBtn.setOnAction((event) -> {
-            mainStage.setScene(scoreScene);
-        });
+        Button resumeBtn = new Button("RESUME");
+        Button quitBtn = new Button("QUIT");
+        pauseButtons.getChildren().addAll(resumeBtn, quitBtn);
 
-        // start a new game
-        startBtn.setOnAction((event) -> {
-            mainStage.setScene(gameScene);
-        });
-
-        // toMenu button actions
-        toMenuBtn.setOnAction((event) -> {
-            mainStage.setScene(menuScene);
-        });
+        pausePane.getChildren().add(pauseButtons);
+        Scene pauseScene = new Scene(pausePane);
 
         // record buttons and mouse events
         HashMap<KeyCode, Boolean> input = new HashMap<>();
         ArrayList<MouseEvent> mouseEvents = new ArrayList<>();
+
+        // Add darkness
+        Darkness dark = new Darkness();
+        gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseEvents).getPlayer().getLamp()));
 
         gameScene.setOnKeyPressed((event -> {
             input.put(event.getCode(), Boolean.TRUE);
@@ -156,6 +143,13 @@ public class Ui extends Application {
         }));
 
         gameScene.setOnKeyReleased((event -> {
+
+            // Escape buttons shows pauseScreen
+            if (event.getCode() == KeyCode.ESCAPE) {
+                GameMotor.getInstance(input, mouseEvents).pause();
+                mainStage.setScene(pauseScene);
+            }
+
             input.put(event.getCode(), Boolean.FALSE);
         }));
 
@@ -163,17 +157,50 @@ public class Ui extends Application {
             mouseEvents.add(event);
         }));
 
+        // Show startingScreen
+        mainStage.setScene(menuScene);
+        mainStage.show();
+
+        // Show Highscore screen button
+        scoresBtn.setOnAction((event) -> {
+            mainStage.setScene(scoreScene);
+        });
+
+        // Highscore Screen Back button
+        toMenuBtn.setOnAction((event) -> {
+            mainStage.setScene(menuScene);
+        });
+
+        // Start a new game Button
+        startBtn.setOnAction((event) -> {
+            GameMotor.getInstance(input, mouseEvents).newGame();
+            // Add player
+            gamePane.getChildren().add(GameMotor.getInstance(input, mouseEvents).getPlayer().getShape());
+            mainStage.setScene(gameScene);
+        });
+        // Resume game Button
+        resumeBtn.setOnAction((event) -> {
+            GameMotor.getInstance(input, mouseEvents).resume();
+            mainStage.setScene(gameScene);
+        });
+
+        // Quit game Button
+        quitBtn.setOnAction((event) -> {
+            gamePane.getChildren().remove(GameMotor.getInstance(input, mouseEvents).getPlayer().getShape());
+            mainStage.setScene(menuScene);
+        });
+
         new AnimationTimer() {
 
             @Override
             public void handle(long l) {
 
-                GameMotor.getInstance(input, mouseEvents, player).update();
+                GameMotor.getInstance(input, mouseEvents).update();
 
                 // Make player.lamp cut trough dark 
                 gamePane.getChildren().remove(dark.getOld());
 
-                gamePane.getChildren().add(dark.update(player.getLamp()));
+                gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseEvents).getPlayer().getLamp()));
 
             }
 
