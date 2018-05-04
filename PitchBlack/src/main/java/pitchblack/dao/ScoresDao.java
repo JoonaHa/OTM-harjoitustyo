@@ -34,7 +34,6 @@ public class ScoresDao {
      * @param score Tietokantaan lisättävä score-olio.
      * @return score-olion lisäyksen onnistuminen
      * @throws SQLException
-     * @throws Exception
      */
     public boolean add(Score score) throws SQLException {
         try (Connection connection = database.getConnection()) {
@@ -56,7 +55,6 @@ public class ScoresDao {
      *
      * @return Lista tietokannan score-oliosta.
      * @throws SQLException
-     * @throws Exception
      */
     public List<Score> getAll() throws SQLException {
         Connection connection = database.getConnection();
@@ -87,7 +85,6 @@ public class ScoresDao {
      * @param nickname Poistettavan pelaajan nimimerkki.
      * @return Poistamisen onnistuminen.
      * @throws SQLException
-     * @throws Exception
      */
     public boolean delete(String nickname) throws SQLException {
         try (Connection connection = database.getConnection()) {
