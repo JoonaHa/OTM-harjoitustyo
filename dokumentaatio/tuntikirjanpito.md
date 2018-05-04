@@ -19,4 +19,5 @@
 |       | 1    | Database luo tietokannan jos sitä ei ole.
 |       | 1    | Sekalaista siistimistä
 | 3.5   | 2    | Arkkitehtuurikuvaus ja käyttöhjeen viimeistely
+| 4.5   | 1    | Pelin pause tuki lisätty
 | yht.  | 31   |  |
