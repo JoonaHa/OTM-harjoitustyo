@@ -21,6 +21,7 @@ public class GameMotor {
     private final ArrayList<MouseEvent> mouseEvents;
     private Player player;
     private Boolean running;
+    private int score;
 
     /**
      *
@@ -32,6 +33,7 @@ public class GameMotor {
         this.player = new Player(WIDTH / 2, HEIGHT / 2);
         this.player.rotateTowards(WIDTH/2, 0);
         this.running = true;
+        this.score = 0;
 
     }
 
@@ -54,6 +56,7 @@ public class GameMotor {
      */
     public void update() {
 
+        // if game is paused don't update game's state
         if (!this.running) {
             return;
         }
@@ -83,6 +86,7 @@ public class GameMotor {
         if (mouseEvents.size() > 0) {
             player.rotateTowards(mouseEvents.get(mouseEvents.size() - 1).getSceneX(), mouseEvents.get(mouseEvents.size() - 1).getSceneY());
         }
+        
 
         player.update();
     }
@@ -91,6 +95,12 @@ public class GameMotor {
     public Player getPlayer() {
         return player;
     }
+
+    public int getScore() {
+        return score;
+    }
+    
+    
     
 
      /**
