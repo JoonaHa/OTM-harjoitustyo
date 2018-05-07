@@ -35,15 +35,15 @@ public class Enemy2 extends Sprite {
 
     }
 
-    public void moveTowards(double x, double y) {
+    private void moveTowards(double x, double y) {
 
         this.rotateTowards(x, y);
 
         double deltaX = Math.cos(Math.toRadians(this.getShape().getRotate()));
         double deltaY = Math.sin(Math.toRadians(this.getShape().getRotate()));
 
-        deltaX *= 1.0;
-        deltaY *= 1.0;
+        deltaX *= 1.5;
+        deltaY *= 1.5;
 
         this.setVelocity(new Point2D(deltaX, deltaY));
     }

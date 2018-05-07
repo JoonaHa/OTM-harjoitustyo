@@ -94,7 +94,7 @@ public class Enemy1 extends Sprite {
     }
 
     private void randomMove() {
-        
+
         double step = 80;
 
         double xBorder = Ui.WIDTH + this.borderXOffset;
@@ -102,8 +102,6 @@ public class Enemy1 extends Sprite {
 
         x = (xBorder - this.borderXOffset) * new Random().nextDouble() + step;
         y = (yBorder - this.borderYOffset) * new Random().nextDouble() + step;
-
-        System.out.println(x + ":" + y);
 
         moveTowards(x, y);
 

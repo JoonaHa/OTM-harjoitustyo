@@ -10,12 +10,14 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -24,7 +26,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import pitchblack.domain.GameMotor;
-import pitchblack.domain.Player;
 
 /**
  *
@@ -35,6 +36,7 @@ public class Ui extends Application {
     public static double WIDTH = 900;
     public static double HEIGHT = 600;
     private static ScoresDao scoreDao;
+    private static Pane gamePane;
 
     public static void main(String[] args) throws Exception {
 
@@ -102,7 +104,7 @@ public class Ui extends Application {
         Scene scoreScene = new Scene(scoreBorderP);
 
         // Creating the gamescene
-        Pane gamePane = new Pane();
+        gamePane = new Pane();
         gamePane.setPrefSize(WIDTH, HEIGHT);
         Scene gameScene = new Scene(gamePane);
 
@@ -131,12 +133,12 @@ public class Ui extends Application {
 
         // record buttons and mouse events
         HashMap<KeyCode, Boolean> input = new HashMap<>();
+        HashMap<MouseButton, Boolean> mouseClicks = new HashMap<>();
         ArrayList<MouseEvent> mouseEvents = new ArrayList<>();
 
         // Add darkness
         Darkness dark = new Darkness();
-        gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseEvents).getPlayer().getLamp()));
-
+        gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseEvents, mouseClicks).getPlayer().getLamp()));
         gameScene.setOnKeyPressed((event -> {
             input.put(event.getCode(), Boolean.TRUE);
 
@@ -146,13 +148,21 @@ public class Ui extends Application {
 
             // Escape buttons shows pauseScreen
             if (event.getCode() == KeyCode.ESCAPE) {
-                GameMotor.getInstance(input, mouseEvents).pause();
+                GameMotor.getInstance(input, mouseEvents, mouseClicks).pause();
                 mainStage.setScene(pauseScene);
             }
 
             input.put(event.getCode(), Boolean.FALSE);
         }));
 
+        gameScene.setOnMousePressed((event -> {
+            mouseClicks.put(event.getButton(), Boolean.TRUE);
+
+        }));
+
+        gameScene.setOnMouseReleased((event -> {
+            mouseClicks.put(event.getButton(), Boolean.FALSE);
+        }));
         gameScene.setOnMouseMoved((event -> {
             mouseEvents.add(event);
         }));
@@ -173,20 +183,20 @@ public class Ui extends Application {
 
         // Start a new game Button
         startBtn.setOnAction((event) -> {
-            GameMotor.getInstance(input, mouseEvents).newGame();
+            GameMotor.getInstance(input, mouseEvents, mouseClicks).newGame();
             // Add player
-            gamePane.getChildren().add(GameMotor.getInstance(input, mouseEvents).getPlayer().getShape());
+            gamePane.getChildren().add(GameMotor.getInstance(input, mouseEvents, mouseClicks).getPlayer().getShape());
             mainStage.setScene(gameScene);
         });
         // Resume game Button
         resumeBtn.setOnAction((event) -> {
-            GameMotor.getInstance(input, mouseEvents).resume();
+            GameMotor.getInstance(input, mouseEvents, mouseClicks).resume();
             mainStage.setScene(gameScene);
         });
 
         // Quit game Button
         quitBtn.setOnAction((event) -> {
-            gamePane.getChildren().remove(GameMotor.getInstance(input, mouseEvents).getPlayer().getShape());
+            gamePane.getChildren().remove(GameMotor.getInstance(input, mouseEvents, mouseClicks).getPlayer().getShape());
             mainStage.setScene(menuScene);
         });
 
@@ -195,13 +205,12 @@ public class Ui extends Application {
             @Override
             public void handle(long l) {
 
-                GameMotor.getInstance(input, mouseEvents).update();
+                GameMotor.getInstance(input, mouseEvents, mouseClicks).update();
 
-                // Make player.lamp cut trough dark 
+                //Make player.lamp cut trough dark 
                 gamePane.getChildren().remove(dark.getOld());
 
-                gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseEvents).getPlayer().getLamp()));
-
+                gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseEvents, mouseClicks).getPlayer().getLamp()));
             }
 
         }.start();
@@ -213,6 +222,10 @@ public class Ui extends Application {
         scores.addAll(scoreDao.getAll());
 
         return scores;
+    }
+
+    public static void render(Node node) {
+        gamePane.getChildren().add(node);
     }
 
 }
