@@ -23,20 +23,19 @@ public class Enemy1 extends Sprite {
 
     private double sightRaudius;
     private long time;
-    private double borderXOffset;
-    private double borderYOffset;
     private double x = 0;
     private double y = 0;
+    public static double borderOffset;
 
     public Enemy1(double x, double y) {
         super(new Polygon(15, -10, 15, 5, -10, 5, -10, -10), x, y);
         this.sightRaudius = 150;
+        this.borderOffset = 40;
         time = TimeUnit.SECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
-        this.borderXOffset = 40;
-        this.borderYOffset = 40;
 
     }
 
+    @Override
     public void patrol(Player player) {
 
         double distance = Math.sqrt(Math.pow(player.getShape().getTranslateX() - this.getShape().getTranslateX(), 2)
@@ -77,17 +76,17 @@ public class Enemy1 extends Sprite {
     public void update() {
         super.update();
 
-        if (this.getShape().getTranslateX() < -this.borderXOffset) {
+        if (this.getShape().getTranslateX() < -this.borderOffset) {
             this.getShape().setTranslateX(0);
         }
-        if (this.getShape().getTranslateX() > Ui.WIDTH + this.borderXOffset) {
+        if (this.getShape().getTranslateX() > Ui.WIDTH + this.borderOffset) {
             this.getShape().setTranslateX((Ui.WIDTH));
 
         }
-        if (this.getShape().getTranslateY() < -this.borderYOffset) {
+        if (this.getShape().getTranslateY() < -this.borderOffset) {
             this.getShape().setTranslateY(0);
         }
-        if (this.getShape().getTranslateY() > Ui.HEIGHT + this.borderYOffset) {
+        if (this.getShape().getTranslateY() > Ui.HEIGHT + this.borderOffset) {
             this.getShape().setTranslateY(Ui.HEIGHT);
         }
 
@@ -97,11 +96,11 @@ public class Enemy1 extends Sprite {
 
         double step = 80;
 
-        double xBorder = Ui.WIDTH + this.borderXOffset;
-        double yBorder = Ui.HEIGHT + this.borderYOffset;
+        double xBorder = Ui.WIDTH + this.borderOffset;
+        double yBorder = Ui.HEIGHT + this.borderOffset;
 
-        x = (xBorder - this.borderXOffset) * new Random().nextDouble() + step;
-        y = (yBorder - this.borderYOffset) * new Random().nextDouble() + step;
+        x = xBorder * new Random().nextDouble() + step;
+        y = yBorder * new Random().nextDouble() + step;
 
         moveTowards(x, y);
 
