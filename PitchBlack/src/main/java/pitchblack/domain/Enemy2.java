@@ -19,16 +19,15 @@ import pitchblack.gui.Ui;
  */
 public class Enemy2 extends Sprite {
 
-    private double borderXOffset;
-    private double borderYOffset;
+    public static double borderOffset;
 
     public Enemy2(double x, double y) {
         super(new Polygon(-10, -10, 8, 0, -10, 10), x, y);
-        this.borderXOffset = 40;
-        this.borderYOffset = 40;
+        this.borderOffset = 40;
 
     }
 
+    @Override
     public void patrol(Player player) {
 
         moveTowards(player.getShape().getTranslateX(), player.getShape().getTranslateY());
@@ -53,17 +52,17 @@ public class Enemy2 extends Sprite {
     public void update() {
         super.update();
 
-        if (this.getShape().getTranslateX() < -this.borderXOffset) {
+        if (this.getShape().getTranslateX() < -this.borderOffset) {
             this.getShape().setTranslateX(0);
         }
-        if (this.getShape().getTranslateX() > Ui.WIDTH + this.borderXOffset) {
+        if (this.getShape().getTranslateX() > Ui.WIDTH + this.borderOffset) {
             this.getShape().setTranslateX((Ui.WIDTH));
 
         }
-        if (this.getShape().getTranslateY() < -this.borderYOffset) {
+        if (this.getShape().getTranslateY() < -this.borderOffset) {
             this.getShape().setTranslateY(0);
         }
-        if (this.getShape().getTranslateY() > Ui.HEIGHT + this.borderYOffset) {
+        if (this.getShape().getTranslateY() > Ui.HEIGHT + this.borderOffset) {
             this.getShape().setTranslateY(Ui.HEIGHT);
         }
 
