@@ -2,6 +2,7 @@ package pitchblack.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Stack;
 import pitchblack.dao.ScoresDao;
 import pitchblack.database.Database;
 import pitchblack.domain.Score;
@@ -134,11 +135,14 @@ public class Ui extends Application {
         // record buttons and mouse events
         HashMap<KeyCode, Boolean> input = new HashMap<>();
         HashMap<MouseButton, Boolean> mouseClicks = new HashMap<>();
-        ArrayList<MouseEvent> mouseEvents = new ArrayList<>();
+        Stack<MouseEvent>  mouseMovements = new Stack<>();
 
-        // Add darkness
+//        // Add darkness
         Darkness dark = new Darkness();
-        gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseEvents, mouseClicks).getPlayer().getLamp()));
+        gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseMovements, mouseClicks).getPlayer().getLamp()));
+        
+        
+        
         gameScene.setOnKeyPressed((event -> {
             input.put(event.getCode(), Boolean.TRUE);
 
@@ -148,7 +152,7 @@ public class Ui extends Application {
 
             // Escape buttons shows pauseScreen
             if (event.getCode() == KeyCode.ESCAPE) {
-                GameMotor.getInstance(input, mouseEvents, mouseClicks).pause();
+                GameMotor.getInstance(input, mouseMovements, mouseClicks).pause();
                 mainStage.setScene(pauseScene);
             }
 
@@ -164,7 +168,7 @@ public class Ui extends Application {
             mouseClicks.put(event.getButton(), Boolean.FALSE);
         }));
         gameScene.setOnMouseMoved((event -> {
-            mouseEvents.add(event);
+            mouseMovements.add(event);
         }));
 
         // Show startingScreen
@@ -183,20 +187,19 @@ public class Ui extends Application {
 
         // Start a new game Button
         startBtn.setOnAction((event) -> {
-            GameMotor.getInstance(input, mouseEvents, mouseClicks).newGame();
-            // Add player
-            gamePane.getChildren().add(GameMotor.getInstance(input, mouseEvents, mouseClicks).getPlayer().getShape());
+            GameMotor.getInstance(input, mouseMovements, mouseClicks).newGame();
+
             mainStage.setScene(gameScene);
         });
         // Resume game Button
         resumeBtn.setOnAction((event) -> {
-            GameMotor.getInstance(input, mouseEvents, mouseClicks).resume();
+            GameMotor.getInstance(input, mouseMovements, mouseClicks).resume();
             mainStage.setScene(gameScene);
         });
 
         // Quit game Button
         quitBtn.setOnAction((event) -> {
-            gamePane.getChildren().remove(GameMotor.getInstance(input, mouseEvents, mouseClicks).getPlayer().getShape());
+            gamePane.getChildren().remove(GameMotor.getInstance(input, mouseMovements, mouseClicks).getPlayer().getShape());
             mainStage.setScene(menuScene);
         });
 
@@ -205,12 +208,12 @@ public class Ui extends Application {
             @Override
             public void handle(long l) {
 
-                GameMotor.getInstance(input, mouseEvents, mouseClicks).update();
+                GameMotor.getInstance(input, mouseMovements, mouseClicks).update();
 
-                //Make player.lamp cut trough dark 
+//                Make player.lamp cut trough dark 
                 gamePane.getChildren().remove(dark.getOld());
 
-                gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseEvents, mouseClicks).getPlayer().getLamp()));
+                gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseMovements, mouseClicks).getPlayer().getLamp()));
             }
 
         }.start();
@@ -224,8 +227,12 @@ public class Ui extends Application {
         return scores;
     }
 
-    public static void render(Node node) {
+    public static void addNodeToGame(Node node) {
         gamePane.getChildren().add(node);
+    }
+    
+        public static void removeNodeFromGame(Node node) {
+        gamePane.getChildren().remove(node);
     }
 
 }
