@@ -86,5 +86,11 @@ public abstract class Sprite {
         Shape area = Shape.intersect(this.getShape(), s);
         return area.getBoundsInLocal().getWidth() != -1;
     }
+    
+    
+        public void patrol(Player player) {
+
+      
+    }
 
 }
