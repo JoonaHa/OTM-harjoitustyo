@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -25,7 +26,7 @@ public class GameMotor {
     private static GameMotor gameMotor;
     private final HashMap<KeyCode, Boolean> input;
     private final HashMap<MouseButton, Boolean> mouseClicks;
-    private final Stack<MouseEvent> mouseMovements;
+    private final HashMap<Integer, MouseEvent> mouseMovements;
     private Player player;
     private List<Sprite> enemies;
     private Boolean running;
@@ -37,7 +38,7 @@ public class GameMotor {
      *
      *
      */
-    private GameMotor(HashMap<KeyCode, Boolean> input, Stack<MouseEvent> mouseMovements, HashMap<MouseButton, Boolean> mouseClicks) {
+    private GameMotor(HashMap<KeyCode, Boolean> input, HashMap<Integer, MouseEvent> mouseMovements, HashMap<MouseButton, Boolean> mouseClicks) {
         this.input = input;
         this.mouseClicks = mouseClicks;
         this.mouseMovements = mouseMovements;
@@ -58,7 +59,7 @@ public class GameMotor {
      * @param mouseMovements Käyttäjän hiiren tapahtumat.
      * @return GameMotor instanssi.
      */
-    public static GameMotor getInstance(HashMap<KeyCode, Boolean> input, Stack<MouseEvent> mouseMovements, HashMap<MouseButton, Boolean> mouseClicks) {
+    public static GameMotor getInstance(HashMap<KeyCode, Boolean> input, HashMap<Integer, MouseEvent> mouseMovements, HashMap<MouseButton, Boolean> mouseClicks) {
         if (gameMotor == null) {
             gameMotor = new GameMotor(input, mouseMovements, mouseClicks);
         }
@@ -74,9 +75,9 @@ public class GameMotor {
         if (!this.running) {
             return;
         }
-
+        
         player.setVelocity(new Point2D(0, 0));
-
+        
         if (input.getOrDefault(KeyCode.W, Boolean.FALSE)) {
             player.setVelocity((new Point2D(player.getVelocity().getX(), -5)));
 
@@ -97,7 +98,7 @@ public class GameMotor {
 
         }
 
-        if (mouseClicks.getOrDefault(MouseButton.PRIMARY, Boolean.FALSE && bullets.size() < 3)) {
+        if (mouseClicks.getOrDefault(MouseButton.PRIMARY, Boolean.FALSE) && bullets.size() < 1) {
             Bullet bullet = new Bullet(player);
             bullets.add(bullet);
             bullet.shoot();
@@ -107,37 +108,43 @@ public class GameMotor {
         }
 
         if (mouseMovements.size() > 0) {
-            player.rotateTowards(mouseMovements.get(mouseMovements.size() - 1).getSceneX(), mouseMovements.get(mouseMovements.size() - 1).getSceneY());
+            MouseEvent event = mouseMovements.get(1);
+            player.rotateTowards(event.getSceneX(), event.getSceneY());
         }
 
         long compTime = TimeUnit.SECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
 
-        if (compTime - this.spawnTime >= 6) {
+        if (compTime - this.spawnTime >= 6 && enemies.size() < 1) {
             spawnEnemies();
-             this.spawnTime = TimeUnit.SECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
+            this.spawnTime = TimeUnit.SECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
         }
 
         bullets.forEach(bullet -> {
-
             enemies.stream().filter(enemy -> enemy.intersects(bullet.getShape())).forEach(enemy -> {
-                this.score ++;
+                this.score++;
                 bullet.setAlife(false);
                 enemy.setAlife(false);
-                
             });
-
-            if (!bullet.isAlife()) {
-                Ui.removeNodeFromGame(bullet.getShape());
-                bullets.remove(bullet);
-
-            }
         });
 
-        enemies.forEach(enemy -> {
-            if (!enemy.isAlife()) {
-                Ui.removeNodeFromGame(enemy.getShape());
-                enemies.remove(enemy);
+        enemies.stream().filter(enemy -> !enemy.isAlife())
+                .forEach(enemy -> Ui.removeNodeFromGame(enemy.getShape()));
 
+        enemies.removeAll(enemies.stream()
+                .filter(enemy -> !enemy.isAlife())
+                .collect(Collectors.toList()));
+
+        bullets.stream().filter(bullet -> !bullet.isAlife())
+                .forEach(bullet -> Ui.removeNodeFromGame(bullet.getShape()));
+
+        bullets.removeAll(bullets.stream()
+                .filter(bullet -> !bullet.isAlife())
+                .collect(Collectors.toList()));
+
+        enemies.stream().forEach(enemy -> {
+
+            if (enemy.intersects(getPlayer().getShape())) {
+                getPlayer().setAlife(false);
             }
         });
 
@@ -149,17 +156,19 @@ public class GameMotor {
     }
 
     private void spawnEnemies() {
-        int enemy1Count = 3 + score;
-        int enemy2Count = 0 + score ;
+
+        int scale;
+        scale = (int) Math.ceil(score * 0.2);
+        int enemy1Count = 2 + scale;
+        int enemy2Count = 1 + scale;
 
         for (int i = 0; i < enemy1Count; i++) {
 
             // spawn enemy offscreen but still on their acceptable locations
-            double xSpawnArea = Enemy1.borderOffset;
-            double ySpawnArea = Enemy1.borderOffset;
+            double xSpawnArea = Ui.WIDTH + Enemy1.borderOffset;
+            double y = Ui.HEIGHT + Enemy1.borderOffset;
 
-            double x = xSpawnArea * new Random().nextDouble() + Ui.WIDTH;
-            double y = ySpawnArea * new Random().nextDouble() + Ui.HEIGHT;
+            double x = xSpawnArea * new Random().nextDouble();
 
             Enemy1 enemy1 = new Enemy1(x, y);
 
@@ -171,11 +180,10 @@ public class GameMotor {
         for (int i = 0; i < enemy2Count; i++) {
 
             // spawn enemy offscreen but still in to their acceptable locations
-            double xSpawnArea = Enemy1.borderOffset;
-            double ySpawnArea = Enemy1.borderOffset;
+            double x = 0 - Enemy2.borderOffset;
+            double ySpawnArea = Ui.HEIGHT + Enemy2.borderOffset;
 
-            double x = xSpawnArea * new Random().nextDouble() + Ui.WIDTH;
-            double y = ySpawnArea * new Random().nextDouble() + Ui.HEIGHT;
+            double y = ySpawnArea * new Random().nextDouble();
 
             Enemy2 enemy2 = new Enemy2(x, y);
 
@@ -196,6 +204,10 @@ public class GameMotor {
 
     private List<Bullet> getBullets() {
         return bullets;
+    }
+
+    public Boolean isRunning() {
+        return running;
     }
 
     /**
@@ -226,7 +238,18 @@ public class GameMotor {
         this.bullets = new ArrayList<>();
         this.resume();
         spawnEnemies();
+        this.pause();
 
+    }
+
+    public void quit() {
+
+        Ui.removeNodeFromGame(getPlayer().getShape());
+
+        enemies.forEach(enemy -> Ui.removeNodeFromGame(enemy.getShape()));
+
+        bullets.forEach(bullet -> Ui.removeNodeFromGame(bullet.getShape()));
+        this.pause();
     }
 
 }

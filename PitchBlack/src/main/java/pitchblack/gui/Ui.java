@@ -1,6 +1,6 @@
 package pitchblack.gui;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Stack;
 import pitchblack.dao.ScoresDao;
@@ -14,19 +14,25 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pitchblack.domain.GameMotor;
+import pitchblack.domain.Player;
 
 /**
  *
@@ -98,6 +104,7 @@ public class Ui extends Application {
 
         scoreTbl.getColumns().addAll(nameColum, scoreColum);
         scoreTbl.setItems(getScores());
+        scoreTbl.getSortOrder().add(scoreColum);
         //Make a back button for highscore
         Button toMenuBtn = new Button("BACK");
         scoreBorderP.setCenter(scoreTbl);
@@ -108,12 +115,6 @@ public class Ui extends Application {
         gamePane = new Pane();
         gamePane.setPrefSize(WIDTH, HEIGHT);
         Scene gameScene = new Scene(gamePane);
-
-        // test recntangle
-        Shape test = new Rectangle(10, 10);
-        test.setTranslateX(WIDTH / 3);
-        test.setTranslateY(WIDTH / 3);
-        gamePane.getChildren().add(test);
 
         //Create pause Screen
         Pane pausePane = new Pane();
@@ -135,17 +136,58 @@ public class Ui extends Application {
         // record buttons and mouse events
         HashMap<KeyCode, Boolean> input = new HashMap<>();
         HashMap<MouseButton, Boolean> mouseClicks = new HashMap<>();
-        Stack<MouseEvent>  mouseMovements = new Stack<>();
+        HashMap<Integer,MouseEvent> mouseMovements = new HashMap<>();
+
+        //Create Game over screen
+        Pane gameOverPane = new Pane();
+        gameOverPane.setPrefSize(WIDTH, HEIGHT);
+        VBox gameOverVbox = new VBox();
+
+        gameOverVbox.setSpacing(40);
+        gameOverVbox.setAlignment(Pos.TOP_CENTER);
+        gameOverVbox.setTranslateX(315);
+        gameOverVbox.setTranslateY(150);
+
+        Label gameOverTitleLabel = new Label("GAME OVER");
+        gameOverTitleLabel.setFont(Font.font(45));
+        Label gameOverScoreLabel = new Label("SCORE: " + 0);
+        gameOverScoreLabel.setFont(Font.font(25));
+
+        Label gamemOVerHighscoreLabel = new Label("Do you want to save your score?");
+
+        Button addHSBtn = new Button("ADD");
+        Button quitHSBtn = new Button("MAIN MENU");
+        HBox addHSButtons = new HBox();
+        addHSButtons.setSpacing(40);
+        addHSButtons.setTranslateX(40);
+        addHSButtons.getChildren().addAll(quitHSBtn, addHSBtn);
+
+        TextField nicknamefield = new TextField();
+        Label nicknameFieldFeedback = new Label("");
+
+        gameOverVbox.getChildren().addAll(gameOverTitleLabel, gameOverScoreLabel,
+                gamemOVerHighscoreLabel, nicknamefield, nicknameFieldFeedback, addHSButtons);
+
+        gameOverPane.getChildren().add(gameOverVbox);
+        Scene gameOverScene = new Scene(gameOverPane);
 
 //        // Add darkness
         Darkness dark = new Darkness();
         gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseMovements, mouseClicks).getPlayer().getLamp()));
+
+        //Add score
+        ScoreMeter scoreMeter = new ScoreMeter();
+        gamePane.getChildren().add(scoreMeter.update(0));
+
+        // Show startingScreen
+        mainStage.setScene(menuScene);
+        mainStage.show();
         
         
-        
+        //keyboad and mouseEvent handling
+
         gameScene.setOnKeyPressed((event -> {
             input.put(event.getCode(), Boolean.TRUE);
-
         }));
 
         gameScene.setOnKeyReleased((event -> {
@@ -168,15 +210,15 @@ public class Ui extends Application {
             mouseClicks.put(event.getButton(), Boolean.FALSE);
         }));
         gameScene.setOnMouseMoved((event -> {
-            mouseMovements.add(event);
+            mouseMovements.put(1, event);
         }));
-
-        // Show startingScreen
-        mainStage.setScene(menuScene);
-        mainStage.show();
+        
+        
+        //javafx Button actions
 
         // Show Highscore screen button
         scoresBtn.setOnAction((event) -> {
+            this.updateScoreTable(scoreTbl);
             mainStage.setScene(scoreScene);
         });
 
@@ -190,6 +232,7 @@ public class Ui extends Application {
             GameMotor.getInstance(input, mouseMovements, mouseClicks).newGame();
 
             mainStage.setScene(gameScene);
+            GameMotor.getInstance(input, mouseMovements, mouseClicks).resume();
         });
         // Resume game Button
         resumeBtn.setOnAction((event) -> {
@@ -199,9 +242,39 @@ public class Ui extends Application {
 
         // Quit game Button
         quitBtn.setOnAction((event) -> {
-            gamePane.getChildren().remove(GameMotor.getInstance(input, mouseMovements, mouseClicks).getPlayer().getShape());
+            GameMotor.getInstance(input, mouseMovements, mouseClicks).quit();
             mainStage.setScene(menuScene);
         });
+        // Quit endscreen Button
+        quitHSBtn.setOnAction((event -> {
+            GameMotor.getInstance(input, mouseMovements, mouseClicks).quit();
+            mainStage.setScene(menuScene);
+        }));
+
+        addHSBtn.setOnAction((event -> {
+            String nickName = nicknamefield.getText();
+            int points = GameMotor.getInstance(input,
+                    mouseMovements, mouseClicks).getScore();
+
+            if (nickName.trim().length() < 1) {
+                nicknameFieldFeedback.setText("Give a proper nickname!");
+                nicknameFieldFeedback.setTextFill(Color.RED);
+
+            } else if (nickName.length() > 100) {
+                nicknameFieldFeedback.setText("Nickname can only be 100 characters long!");
+                nicknameFieldFeedback.setTextFill(Color.RED);
+
+            } else {
+
+                Score score = new Score(nickName, points);
+                this.addScore(score);
+              this.updateScoreTable(scoreTbl);
+
+                mainStage.setScene(scoreScene);
+
+            }
+
+        }));
 
         new AnimationTimer() {
 
@@ -209,11 +282,23 @@ public class Ui extends Application {
             public void handle(long l) {
 
                 GameMotor.getInstance(input, mouseMovements, mouseClicks).update();
+                int score = GameMotor.getInstance(input, mouseMovements, mouseClicks).getScore();
+                Player player = GameMotor.getInstance(input, mouseMovements, mouseClicks).getPlayer();
+                boolean running = GameMotor.getInstance(input, mouseMovements, mouseClicks).isRunning();
 
+                if (!player.isAlife() && running) {
+                    gameOverScoreLabel.setText("SCORE: " + score);
+                    mainStage.setScene(gameOverScene);
+                     GameMotor.getInstance(input, mouseMovements, mouseClicks).quit();
+                     
+                }
 //                Make player.lamp cut trough dark 
                 gamePane.getChildren().remove(dark.getOld());
-
                 gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseMovements, mouseClicks).getPlayer().getLamp()));
+
+                //Update ScoreMeter
+                gamePane.getChildren().remove(scoreMeter.getOld());
+                gamePane.getChildren().add(scoreMeter.update(score));
             }
 
         }.start();
@@ -227,11 +312,33 @@ public class Ui extends Application {
         return scores;
     }
 
+    private void addScore(Score score) {
+
+        try {
+            scoreDao.add(score);
+
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    private void updateScoreTable(TableView<Score> scoreTbl) {
+        try {
+            scoreTbl.setItems(getScores());
+        } catch (Exception e) {
+
+        }
+
+    }
+    
+    
+
     public static void addNodeToGame(Node node) {
         gamePane.getChildren().add(node);
     }
-    
-        public static void removeNodeFromGame(Node node) {
+
+    public static void removeNodeFromGame(Node node) {
         gamePane.getChildren().remove(node);
     }
 

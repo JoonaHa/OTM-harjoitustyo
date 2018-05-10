@@ -29,7 +29,7 @@ public class Enemy1 extends Sprite {
 
     public Enemy1(double x, double y) {
         super(new Polygon(15, -10, 15, 5, -10, 5, -10, -10), x, y);
-        this.sightRaudius = 150;
+        this.sightRaudius = 190;
         this.borderOffset = 40;
         time = TimeUnit.SECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
 

@@ -22,7 +22,7 @@ public class Enemy2 extends Sprite {
     public static double borderOffset;
 
     public Enemy2(double x, double y) {
-        super(new Polygon(-10, -10, 8, 0, -10, 10), x, y);
+        super(new Polygon(-10, -15, 10, 0, -10, 15), x, y);
         this.borderOffset = 40;
 
     }

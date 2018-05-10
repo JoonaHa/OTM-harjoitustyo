@@ -36,9 +36,9 @@ public class Player extends Sprite {
      */
     public Player(double x, double y) {
         super((new Polygon(10, -10, 10, 10, -10, 10, -10, -10)), x, y);
-        this.lamp = new Ellipse(80, 120);
+        this.lamp = new Ellipse(120, 150);
         this.lamp.setTranslateX(x);
-        this.lampoffset = -115;
+        this.lampoffset = -140;
         this.lamp.setTranslateY(y + lampoffset);
         this.lamp.setFill(Color.WHITE);
         this.lampRt = new Rotate();

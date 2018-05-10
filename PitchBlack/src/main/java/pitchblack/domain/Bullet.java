@@ -17,7 +17,7 @@ public class Bullet extends Sprite {
     private Player player;
 
     public Bullet(Player player) {
-        super(new Polygon(2, -1, 2, 1, -1, 1, -1, -1), player.getShape().getTranslateX(), player.getShape().getTranslateY());
+        super(new Polygon(4, -2, 4, 2, -2, 2, -2, -2), player.getShape().getTranslateX(), player.getShape().getTranslateY());
         this.player = player;
 
     }
