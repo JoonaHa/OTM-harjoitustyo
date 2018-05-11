@@ -20,4 +20,9 @@
 |       | 1    | Sekalaista siistimistä
 | 3.5   | 2    | Arkkitehtuurikuvaus ja käyttöhjeen viimeistely
 | 4.5   | 1    | Pelin pause tuki lisätty
-| yht.  | 31   |  |
+| 6.5   | 4    | Vihollistyypit luotu
+| 7.5   | 4    | Ampuminen toteutettu
+| 8.5   | 4    | Sovelluslogiikkaa hiottu ja vihollisten syntyminen saatu toimimaan
+| 10.5  | 4    | Pelin loppu-ruutu ja tulosten lisääminen toteutettu 
+| 11.5  | 4    | Testejä kasvatettu ja peliä hiottu.
+| yht.  | 51   |  |
