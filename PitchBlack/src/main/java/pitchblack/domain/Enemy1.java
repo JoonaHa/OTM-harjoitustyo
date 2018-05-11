@@ -7,12 +7,8 @@ package pitchblack.domain;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import javafx.animation.PathTransition;
 import javafx.geometry.Point2D;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
-import javafx.util.Duration;
 import pitchblack.gui.Ui;
 
 /**
@@ -65,8 +61,8 @@ public class Enemy1 extends Sprite {
         double deltaX = Math.cos(Math.toRadians(this.getShape().getRotate()));
         double deltaY = Math.sin(Math.toRadians(this.getShape().getRotate()));
 
-        deltaX *= 0.9;
-        deltaY *= 0.9;
+        deltaX *= 1.2;
+        deltaY *= 1.2;
 
         this.setVelocity(new Point2D(deltaX, deltaY));
 

@@ -1,4 +1,3 @@
-
 package pitchblack.domain;
 
 import javafx.geometry.Point2D;
@@ -6,25 +5,26 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
 /**
- *Abstrakti luokka jonka kaikki pelin hahmot perivät.
+ * Abstrakti luokka jonka kaikki pelin hahmot perivät.
+ *
  * @author JoonaHa
- * 
- * 
- * 
+ *
+ *
+ *
  */
 public abstract class Sprite {
 
     private Polygon shape;
     private Point2D velocity;
     private boolean alife;
-    
+
     /**
-     * Luo uuden Sprite-olion 
+     * Luo uuden Sprite-olion
+     *
      * @param shape hahmon muoto
      * @param x x-akselin koordinaatti hahmon aloitusaloitussijainniksi.
      * @param y y-akselin koordinaatti hahmon aloitusaloitussijainniksi.
      */
-
     public Sprite(Polygon shape, double x, double y) {
         this.shape = shape;
         this.shape.setTranslateX(x);
@@ -56,6 +56,7 @@ public abstract class Sprite {
 
     /**
      * Kääntää hahmon kohti annettuja koordinaatteja
+     *
      * @param mouseX x-akselin koordinaatti hahmon katsomissuunnaksi.
      * @param mouseY y-akselin koordinaatti hahmon katsomissuunnaksi.
      */
@@ -67,11 +68,10 @@ public abstract class Sprite {
         this.getShape().setRotate(angle);
 
     }
-    
+
     /**
      * Päivittää hahmon sijainnin nopeuden perusteella.
      */
-
     public void update() {
         this.getShape().setTranslateX(this.getShape().getTranslateX() + this.getVelocity().getX());
         this.getShape().setTranslateY(this.getShape().getTranslateY() + this.getVelocity().getY());
@@ -79,6 +79,7 @@ public abstract class Sprite {
 
     /**
      * Tarkastaa onko hahmo törmännyt Shape-olioon.
+     *
      * @param s Muoto johon Sprite-hahmo on voinut törmätä.
      * @return Palautta true jos kohteet ovat törmänneet, muuten false.
      */
@@ -86,11 +87,9 @@ public abstract class Sprite {
         Shape area = Shape.intersect(this.getShape(), s);
         return area.getBoundsInLocal().getWidth() != -1;
     }
-    
-    
-        public void patrol(Player player) {
 
-      
+    public void patrol(Player player) {
+
     }
 
 }

@@ -1,8 +1,6 @@
 package pitchblack.gui;
 
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Stack;
 import pitchblack.dao.ScoresDao;
 import pitchblack.database.Database;
 import pitchblack.domain.Score;
@@ -27,8 +25,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pitchblack.domain.GameMotor;
@@ -133,11 +129,6 @@ public class Ui extends Application {
         pausePane.getChildren().add(pauseButtons);
         Scene pauseScene = new Scene(pausePane);
 
-        // record buttons and mouse events
-        HashMap<KeyCode, Boolean> input = new HashMap<>();
-        HashMap<MouseButton, Boolean> mouseClicks = new HashMap<>();
-        HashMap<Integer,MouseEvent> mouseMovements = new HashMap<>();
-
         //Create Game over screen
         Pane gameOverPane = new Pane();
         gameOverPane.setPrefSize(WIDTH, HEIGHT);
@@ -164,12 +155,19 @@ public class Ui extends Application {
 
         TextField nicknamefield = new TextField();
         Label nicknameFieldFeedback = new Label("");
+        nicknameFieldFeedback.setTranslateY(HEIGHT - 197);
+        nicknameFieldFeedback.setTranslateX(WIDTH / 2 - 130);
 
         gameOverVbox.getChildren().addAll(gameOverTitleLabel, gameOverScoreLabel,
-                gamemOVerHighscoreLabel, nicknamefield, nicknameFieldFeedback, addHSButtons);
+                gamemOVerHighscoreLabel, nicknamefield, addHSButtons);
 
-        gameOverPane.getChildren().add(gameOverVbox);
+        gameOverPane.getChildren().addAll(gameOverVbox, nicknameFieldFeedback);
         Scene gameOverScene = new Scene(gameOverPane);
+
+        // record buttons and mouse events
+        HashMap<KeyCode, Boolean> input = new HashMap<>();
+        HashMap<MouseButton, Boolean> mouseClicks = new HashMap<>();
+        HashMap<Boolean, MouseEvent> mouseMovements = new HashMap<>();
 
 //        // Add darkness
         Darkness dark = new Darkness();
@@ -182,10 +180,8 @@ public class Ui extends Application {
         // Show startingScreen
         mainStage.setScene(menuScene);
         mainStage.show();
-        
-        
-        //keyboad and mouseEvent handling
 
+        //keyboad and mouseEvent handling
         gameScene.setOnKeyPressed((event -> {
             input.put(event.getCode(), Boolean.TRUE);
         }));
@@ -210,12 +206,10 @@ public class Ui extends Application {
             mouseClicks.put(event.getButton(), Boolean.FALSE);
         }));
         gameScene.setOnMouseMoved((event -> {
-            mouseMovements.put(1, event);
+            mouseMovements.put(Boolean.TRUE, event);
         }));
-        
-        
-        //javafx Button actions
 
+        //javafx Button actions
         // Show Highscore screen button
         scoresBtn.setOnAction((event) -> {
             this.updateScoreTable(scoreTbl);
@@ -230,7 +224,6 @@ public class Ui extends Application {
         // Start a new game Button
         startBtn.setOnAction((event) -> {
             GameMotor.getInstance(input, mouseMovements, mouseClicks).newGame();
-
             mainStage.setScene(gameScene);
             GameMotor.getInstance(input, mouseMovements, mouseClicks).resume();
         });
@@ -252,11 +245,11 @@ public class Ui extends Application {
         }));
 
         addHSBtn.setOnAction((event -> {
-            String nickName = nicknamefield.getText();
+            String nickName = nicknamefield.getText().trim();
             int points = GameMotor.getInstance(input,
                     mouseMovements, mouseClicks).getScore();
 
-            if (nickName.trim().length() < 1) {
+            if (nickName.length() < 1) {
                 nicknameFieldFeedback.setText("Give a proper nickname!");
                 nicknameFieldFeedback.setTextFill(Color.RED);
 
@@ -264,11 +257,14 @@ public class Ui extends Application {
                 nicknameFieldFeedback.setText("Nickname can only be 100 characters long!");
                 nicknameFieldFeedback.setTextFill(Color.RED);
 
+            } else if (!isAlphanumeric(nickName)) {
+                nicknameFieldFeedback.setText("Nickname can only contain alphanumeric characters!");
+                nicknameFieldFeedback.setTextFill(Color.RED);
             } else {
 
                 Score score = new Score(nickName, points);
                 this.addScore(score);
-              this.updateScoreTable(scoreTbl);
+                this.updateScoreTable(scoreTbl);
 
                 mainStage.setScene(scoreScene);
 
@@ -281,24 +277,30 @@ public class Ui extends Application {
             @Override
             public void handle(long l) {
 
-                GameMotor.getInstance(input, mouseMovements, mouseClicks).update();
+                //Check if Game Over screen needs to be shown
+                boolean gameOver = GameMotor.getInstance(input, mouseMovements, mouseClicks).isGameOver();
                 int score = GameMotor.getInstance(input, mouseMovements, mouseClicks).getScore();
-                Player player = GameMotor.getInstance(input, mouseMovements, mouseClicks).getPlayer();
-                boolean running = GameMotor.getInstance(input, mouseMovements, mouseClicks).isRunning();
 
-                if (!player.isAlife() && running) {
+                if (gameOver) {
+
+                    Player player = GameMotor.getInstance(input, mouseMovements, mouseClicks).getPlayer();
+                    boolean running = GameMotor.getInstance(input, mouseMovements, mouseClicks).isRunning();
                     gameOverScoreLabel.setText("SCORE: " + score);
                     mainStage.setScene(gameOverScene);
-                     GameMotor.getInstance(input, mouseMovements, mouseClicks).quit();
-                     
+                    GameMotor.getInstance(input, mouseMovements, mouseClicks).quit();
+
                 }
-//                Make player.lamp cut trough dark 
+
+                //Make player.lamp cut trough dark 
                 gamePane.getChildren().remove(dark.getOld());
                 gamePane.getChildren().add(dark.update(GameMotor.getInstance(input, mouseMovements, mouseClicks).getPlayer().getLamp()));
 
                 //Update ScoreMeter
                 gamePane.getChildren().remove(scoreMeter.getOld());
                 gamePane.getChildren().add(scoreMeter.update(score));
+
+                // Update Game's state
+                GameMotor.getInstance(input, mouseMovements, mouseClicks).update();
             }
 
         }.start();
@@ -331,8 +333,16 @@ public class Ui extends Application {
         }
 
     }
-    
-    
+
+    private boolean isAlphanumeric(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c < 0x30 || (c >= 0x3a && c <= 0x40) || (c > 0x5a && c <= 0x60) || c > 0x7a) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static void addNodeToGame(Node node) {
         gamePane.getChildren().add(node);

@@ -7,24 +7,23 @@ package pitchblack.domain;
 
 /**
  * Luokka pelaajien pistetuloksille.
- * 
- * @author JoonaHa
- * 
  *
- * 
+ * @author JoonaHa
+ *
+ *
+ *
  */
 public class Score implements Comparable<Score> {
 
     private String nickname;
     private Integer score;
-    
+
     /**
      * Luo uuden pistetuloksen.
-     * 
+     *
      * @param nickname Pelaajan lempinimi.
-     * @param score  Pelaajan pisteet
+     * @param score Pelaajan pisteet
      */
-
     public Score(String nickname, int score) {
         this.nickname = nickname;
         this.score = score;
@@ -40,16 +39,14 @@ public class Score implements Comparable<Score> {
 
     @Override
     public int compareTo(Score other) {
-        if (this.score < other.getScore()){
+        if (this.score < other.getScore()) {
             return -1;
         }
-        if (this.score > other.getScore()){
+        if (this.score > other.getScore()) {
             return 1;
         }
-        
+
         return 0;
     }
-    
-    
-    
+
 }
