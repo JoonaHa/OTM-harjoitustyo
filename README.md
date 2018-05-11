@@ -5,6 +5,7 @@ Harjoitustyön, sekä viikottaisten tehtävien, *repo* **ohjelmistotekniikan mek
 Yksinkertainen ylhäältäpäin kuvattu räiskintäpeli, jossa pelaajan pitää puolustaa itseään pimeydessä, apunaan hänen luotettava taskulamppunsa.
 
 ## Dokumentaatio
+* [Testausdokumentti](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/testaus.md)
 * [Käyttöohje](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/kayttoohje.md)
 * [Vaatimusmaarittely](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 * [Arkkitehtuurikuvaus](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
