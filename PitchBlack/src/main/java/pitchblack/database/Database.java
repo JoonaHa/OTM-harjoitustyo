@@ -29,7 +29,7 @@ public class Database {
     public Database(String databaseAddress) throws SQLException {
         this.databaseAddress = databaseAddress;
 
-        File f = new File("highScores.db");
+        File f = new File(databaseAddress);
 
         if (!f.exists()) {
             initDatabase();
@@ -42,11 +42,11 @@ public class Database {
      * @throws SQLException
      */
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(databaseAddress);
+        return DriverManager.getConnection("jdbc:sqlite:" + databaseAddress);
     }
 
     private void initDatabase() throws SQLException {
-        try (Connection conn = DriverManager.getConnection(databaseAddress);
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + databaseAddress);
                 PreparedStatement stmt = conn.prepareStatement("CREATE TABLE Scores (id serial PRIMARY KEY, score integer, name varchar(100))")) {
 
             stmt.execute();
@@ -54,13 +54,12 @@ public class Database {
             stmt.close();
 
             conn.close();
-            
+
             // Add test data
             ScoresDao sc = new ScoresDao(this);
             sc.add(new Score("Impossible", -1));
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
         }
 
     }

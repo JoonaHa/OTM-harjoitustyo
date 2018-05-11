@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import pitchblack.domain.Sprite;
+
 /**
  *
  * @author JoonaHa
@@ -64,7 +65,7 @@ public class SpritetTest {
         sprite.rotateTowards(x, y);
 
         double angle = Math.toDegrees(Math.atan2(sprite.getShape().getTranslateY() - y,
-                x - sprite.getShape().getTranslateX())) *-1;
+                x - sprite.getShape().getTranslateX())) * -1;
 
         assertEquals(angle, sprite.getShape().getRotate(), 0);
     }
@@ -93,8 +94,7 @@ public class SpritetTest {
         assertEquals(true, sprite.intersects(test));
 
     }
-    
-    
+
     @Test
     public void intersectsReturnsFalse() {
         Shape test = new Circle(2, 2, 2);

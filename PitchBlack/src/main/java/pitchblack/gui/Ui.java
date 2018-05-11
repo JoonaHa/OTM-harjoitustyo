@@ -50,7 +50,7 @@ public class Ui extends Application {
     @Override
     public void init() throws Exception {
 
-        Database db = new Database("jdbc:sqlite:highScores.db");
+        Database db = new Database("highScores.db");
         scoreDao = new ScoresDao(db);
 
     }

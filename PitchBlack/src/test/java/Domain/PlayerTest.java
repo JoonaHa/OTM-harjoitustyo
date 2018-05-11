@@ -85,10 +85,9 @@ public class PlayerTest {
         player.update();
 
         assertEquals(player.getShape().getTranslateX(), player.getLamp().getTranslateX(), 0);
-        
+
         assertEquals(player.lampoffset + player.getShape().getTranslateY(),
                 player.getLamp().getTranslateY(), 0);
-        
 
     }
 }

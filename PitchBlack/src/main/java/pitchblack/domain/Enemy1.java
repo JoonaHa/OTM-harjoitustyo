@@ -17,7 +17,7 @@ import pitchblack.gui.Ui;
  */
 public class Enemy1 extends Sprite {
 
-    private double sightRaudius;
+    public static double sightRaudius;
     private long time;
     private double x = 0;
     private double y = 0;
