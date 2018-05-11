@@ -17,6 +17,7 @@ Ohjelman rakenne ilmenee sen pakkauskaaviosta:
 ## Sovelluslogiikka
 
 Ohjelman logiikka on eristetty käyttöliittymäkoodista. Pelin tiloja hallitsee luokka [GameMotor](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/PitchBlack/src/main/java/pitchblack/domain/GameMotor.java). Kyseinen luokka tarkistaa pelin tilan ja päivittää hahmojen sijainnit aina kun metodia [void update()](https://github.com/JoonaHa/OTM-harjoitustyo/blob/36ec3c7a1182219d29c78d6ccf6d271b406ba258/PitchBlack/src/main/java/pitchblack/domain/GameMotor.java#L51) kutsutaan. Luokka on toteutettu singleton patternia hyödyntäen, jotta luokasta on olemassa pelkästään yksi instanssi. Instanssiin pääsee käsiksi metodilla [GameMotor getInstance(...)](https://github.com/JoonaHa/OTM-harjoitustyo/blob/36ec3c7a1182219d29c78d6ccf6d271b406ba258/PitchBlack/src/main/java/pitchblack/domain/GameMotor.java#L40). Parametrina sille annetaan pelaajan hahmo, sekä näppäimistön ja hiiren syöte.
+Käyttöliitymästä kutsutaan ainostaan pelien tilojen päivittämistä animaattorin kierroksen aikana ja vahditaan pelin loppumista, jotta loppumisruutu voidaan näyttää.
 
 Hahmot perivtä abstraktin luokan [Sprite](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/PitchBlack/src/main/java/pitchblack/domain/Sprite.java), joka tallentaa niiden nopeuden, tilan ja muodon Shape-oliona.
 
@@ -30,3 +31,11 @@ Hahmot perivtä abstraktin luokan [Sprite](https://github.com/JoonaHa/OTM-harjoi
 * Lopuksi [Ui](https://github.com/JoonaHa/OTM-harjoitustyo/tree/master/PitchBlack/src/main/java/pitchblack/gui) piirtää pelaajan hahmon päivitettyyn sijaintiin.
 
 <img src="https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/dokumentaatio/Sekvenssikaavio.png" width="800">
+
+## Käyttöliittymä
+- Käyttöliittymä kostuu luokista
+  - [Ui](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/PitchBlack/src/main/java/pitchblack/gui/Ui.java)
+  - [Darkness](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/PitchBlack/src/main/java/pitchblack/gui/Darkness.java)
+  - [ScoreMeter](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/PitchBlack/src/main/java/pitchblack/gui/ScoreMeter.java)
+  
+  [Ui](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/PitchBlack/src/main/java/pitchblack/gui/Ui.java) hyödyntää luokkia pelin pimeyden ja pistemittarin päivittämiseen. Ikkunoiden toteutukset löytyvät [Ui-luokasta](https://github.com/JoonaHa/OTM-harjoitustyo/blob/master/PitchBlack/src/main/java/pitchblack/gui/Ui.java)
